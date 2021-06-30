@@ -4,10 +4,15 @@
 FORM sel_data.
   REFRESH gt_output.
   PERFORM get_from_mb52.
-ENDFORM.
+ENDFORM.                    "sel_data
 
 
 
+*&---------------------------------------------------------------------*
+*&      Form  get_from_mb52
+*&---------------------------------------------------------------------*
+*       Получить данные из MB52
+*----------------------------------------------------------------------*
 FORM get_from_mb52.
   DATA:
     lr_alv_data TYPE REF TO data,
@@ -20,6 +25,7 @@ FORM get_from_mb52.
                                           metadata = abap_true
                                           data     = abap_true ).
 
+  " вызвать MB52
   SUBMIT rm07mlbs EXPORTING LIST TO MEMORY
     WITH matnr  IN s_matnr
     WITH werks  IN s_werks
@@ -45,6 +51,8 @@ FORM get_from_mb52.
         APPEND ls_output TO gt_output.
       ENDLOOP.
 
+
+      " Получить перечень полей ALV в MB52
       DATA: ls_metadata TYPE cl_salv_bs_runtime_info=>s_type_metadata.
       ls_metadata = cl_salv_bs_runtime_info=>get_metadata( ).
       PERFORM fill_fcat USING ls_metadata.
@@ -60,6 +68,13 @@ FORM get_from_mb52.
 ENDFORM.                    "call_mb52
 
 
+*&---------------------------------------------------------------------*
+*&      Form  fill_fcat
+*&---------------------------------------------------------------------*
+* Копируем описание полей ALV MB52 к себе
+*----------------------------------------------------------------------*
+*      -->IS_METADATA  text
+*----------------------------------------------------------------------*
 FORM fill_fcat USING is_metadata TYPE cl_salv_bs_runtime_info=>s_type_metadata.
   DATA:
     ls_fcat TYPE lvc_s_fcat,
@@ -76,14 +91,19 @@ FORM fill_fcat USING is_metadata TYPE cl_salv_bs_runtime_info=>s_type_metadata.
       ls_fcat-hotspot    TO ls_cat-hotspot,
       ls_fcat-seltext    TO ls_cat-seltext_s,
       ls_fcat-tooltip    TO ls_cat-seltext_l.
-
     APPEND ls_cat TO gt_cat.
-
   ENDLOOP.
 
-ENDFORM.
+ENDFORM.                    "fill_fcat
 
-" Заполняем дополнительные поля
+*&---------------------------------------------------------------------*
+*&      Form  add_data
+*&---------------------------------------------------------------------*
+* Заполняем дополнительные поля из FI (поиск документов, у которых
+* BKTXT = MBLNR/CHARG и суммируем
+*----------------------------------------------------------------------*
+*      <--CS_OUTPUT  text
+*----------------------------------------------------------------------*
 FORM add_data CHANGING cs_output TYPE ts_output.
   DATA: lv_bukrs     TYPE bukrs,
         lv_belnr     TYPE belnr_d,
@@ -110,11 +130,13 @@ FORM add_data CHANGING cs_output TYPE ts_output.
   INTO lv_bktxt SEPARATED BY '/'.
 
   SHIFT lv_bktxt LEFT DELETING LEADING '0'.
+  lv_gjahr = sy-datum(4).
 
   SELECT bukrs belnr gjahr
     INTO (lv_bukrs, lv_belnr, lv_gjahr)
     FROM bkpf
-   WHERE blart = 'ZA'
+   WHERE gjahr = lv_gjahr
+     AND blart = 'ZA'
      AND bktxt = lv_bktxt
      AND stblg = ''.
 
@@ -142,4 +164,4 @@ FORM add_data CHANGING cs_output TYPE ts_output.
     cs_output-dmbe2_usd = cs_output-ziv_dmbe2 - cs_output-dmbe1_usd.
 
   ENDIF.
-ENDFORM.
+ENDFORM.                    "add_data

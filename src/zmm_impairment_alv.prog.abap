@@ -36,10 +36,10 @@
         is_layout               = ls_alv_layout
         it_fieldcat             = gt_cat
         i_callback_user_command = 'USER_COMMAND'
-"       i_callback_pf_status_set = 'SET_PF_STATUS'
+      "       i_callback_pf_status_set = 'SET_PF_STATUS'
         i_save                  = 'X'
         is_variant              = ls_variant
-"       i_callback_top_of_page  = 'TOP_10'
+      "       i_callback_top_of_page  = 'TOP_10'
       TABLES
         t_outtab                = gt_output
       EXCEPTIONS
@@ -48,6 +48,14 @@
 
   ENDFORM.                    "alv
 
+*&---------------------------------------------------------------------*
+*&      Form  user_command
+*&---------------------------------------------------------------------*
+*       text
+*----------------------------------------------------------------------*
+*      -->UCOMM      text
+*      -->SELLINE    text
+*----------------------------------------------------------------------*
   FORM user_command USING ucomm
         selline TYPE slis_selfield.
     DATA: ls_output  LIKE LINE OF gt_output,
