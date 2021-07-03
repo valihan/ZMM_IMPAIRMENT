@@ -10,6 +10,7 @@ REPORT zmm_impairment.
 INCLUDE zmm_impairment_top.
 INCLUDE zmm_impairment_scr.
 INCLUDE zmm_impairment_sel.
+INCLUDE zmm_impariment_f00.
 INCLUDE zmm_impairment_alv.
 
 

@@ -2,7 +2,7 @@
 *&  Include           ZMM_IMPAIRMENT_TOP
 *&---------------------------------------------------------------------*
 
-TABLES: t001w, t001l, mara, mchb.
+TABLES: t001w, t001l, mara, mchb, marc.
 
 TYPES: BEGIN OF ts_output.
 TYPES:   "checkbox           TYPE c,
@@ -67,12 +67,12 @@ TYPES:
   dmbe2_kzt  TYPE dmbtr,
   dmbe2_usd  TYPE dmbtr.
 
-TYPES
-: ziv_waers_dmbe2 TYPE t001-waers
-, ziv_dmbe2 TYPE ckmlcr-salk3
-, ziv_mfrpn TYPE mara-mfrpn
-, ziv_serial TYPE i
-, ziv_konts TYPE t030-konts
+types
+: ziv_waers_dmbe2 type t001-waers
+, ziv_dmbe2 type CKMLCR-SALK3
+, ziv_MFRPN type mara-MFRPN
+, ziv_serial type i
+, ziv_konts type t030-konts
 .
 TYPES:END OF ts_output.
 

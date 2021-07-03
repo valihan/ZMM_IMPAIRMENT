@@ -20,7 +20,7 @@
     ls_alv_layout-info_fieldname = 'COLOR'.
     ls_alv_layout-zebra = 'X'.
     "    ls_alv_layout-box_fieldname = 'CHECKBOX'.
-*    ls_variant-variant = p_var.
+    ls_variant-variant = p_var.
 
 
     fc_add 'DMBE1_KZT' text-520 text-520.

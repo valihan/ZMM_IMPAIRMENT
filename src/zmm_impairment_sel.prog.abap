@@ -30,6 +30,9 @@ FORM get_from_mb52.
     WITH matnr  IN s_matnr
     WITH werks  IN s_werks
     WITH lgort  IN s_lgort
+    WITH matart IN s_matart
+    WITH matkla IN s_matkla
+    WITH ekgrup IN s_ekgrup
     WITH xmchb  = abap_true
     WITH nozero = abap_true
     WITH pa_hsq = abap_false
@@ -84,6 +87,8 @@ FORM fill_fcat USING is_metadata TYPE cl_salv_bs_runtime_info=>s_type_metadata.
     CLEAR ls_cat.
     "MOVE-CORRESPONDING ls_gcat TO ls_fcat.
     MOVE:
+      ls_fcat-ref_field  to ls_cat-ref_fieldname,
+      ls_fcat-ref_table  to ls_cat-ref_tabname,
       ls_fcat-fieldname  TO ls_cat-fieldname,
       ls_fcat-tabname    TO ls_cat-tabname,
       ls_fcat-cfieldname TO ls_cat-cfieldname,
@@ -157,6 +162,7 @@ FORM add_data CHANGING cs_output TYPE ts_output.
 
 
   IF lv_menge1 > 0.
+    cs_output-color = 'C500'.
     cs_output-dmbe1_kzt = lv_dmbe1_kzt / lv_menge1 * cs_output-labst.
     cs_output-dmbe1_usd = lv_dmbe1_usd / lv_menge1 * cs_output-labst.
 
